@@ -8,13 +8,13 @@
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark" style>
-    <a class="navbar-brand" href="/">На главную</a>
+    <a class="navbar-brand" href="/">To main page</a>
     {% if current_user.is_authenticated %}
-    <a class="btn btn-primary" href="/logout">Выйти</a>
+    <a class="btn btn-primary" href="/logout">Logout</a>
     {% else %}
     <p>
-        <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-        <a class="btn btn-success" href="/login">Войти</a>
+        <a class="btn btn-primary " href="/register">Register</a>
+        <a class="btn btn-success" href="/login">Login</a>
     </p>
     {% endif %}
 </nav>

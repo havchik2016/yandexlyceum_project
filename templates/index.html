@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-<h3 style='color: #fff; font-size: 30px; text-align: center;'>Нет сообщений...</h3>
+<h3 style='color: #fff; font-size: 30px; text-align: center;'>No messages yet...</h3>
 <div class="message_holder" style="text-align: center; color: #fff;"></div>
 <form action="" method="POST" style="text-align: center">
     <input type="text" class="username" value="{{ current_user.nick }}" disabled/>
@@ -40,7 +40,7 @@
 
 </script>
 {% else %}
-<h2 style="color: #fff; text-align:center;">Добро пожаловать в чат для программистов!<br>
-Зарергистрируйтесь или войдите, чтобы присоединиться к чату.</h2>
+<h2 style="color: #fff; text-align:center;">Welcome to a live chat for programmers!<br>
+Register or login to join the chat.</h2>
 {% endif %}
 {% endblock %}

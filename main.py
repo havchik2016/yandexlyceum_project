@@ -4,7 +4,6 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 from wtforms import PasswordField, StringField, SubmitField, BooleanField
 from wtforms.validators import DataRequired
 from wtforms.fields.html5 import EmailField
-from werkzeug.exceptions import NotFound
 from flask_socketio import SocketIO
 from data import db_session, users
 
@@ -16,23 +15,23 @@ login_manager.init_app(app)
 
 
 class LoginForm(FlaskForm):
-    nick = StringField('Ник', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Запомнить меня', default=False)
-    submit = SubmitField('Войти')
+    nick = StringField('Nick:', validators=[DataRequired()])
+    password = PasswordField('Password:', validators=[DataRequired()])
+    remember_me = BooleanField('Remember me', default=False)
+    submit = SubmitField('Login')
 
 
 class RegisterForm(FlaskForm):
-    nick = StringField('Никнейм', validators=[DataRequired()])
-    email = EmailField('Почта', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
-    submit = SubmitField('Зарегистрироваться')
+    nick = StringField('Nick:', validators=[DataRequired()])
+    email = EmailField('Email:', validators=[DataRequired()])
+    password = PasswordField('Password:', validators=[DataRequired()])
+    password_again = PasswordField('Password again:', validators=[DataRequired()])
+    submit = SubmitField('Register')
 
 
 @app.route('/')
 def sessions():
-    return render_template('index.html', title='Добро пожаловать!')
+    return render_template('index.html', title='Chat')
 
 
 @login_manager.user_loader
@@ -53,16 +52,16 @@ def reqister():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
-            return render_template('register.html', title='Регистрация',
+            return render_template('register.html', title='Registration',
                                    form=form,
-                                   message="Пароли не совпадают")
+                                   message="Passwords don't match!")
         session = db_session.create_session()
         if session.query(users.User).filter(users.User.email == form.email.data).first() or (
                 session.query(users.User).filter(users.User.nick == form.nick.data).first()
         ):
-            return render_template('register.html', title='Регистрация',
+            return render_template('register.html', title='Registration',
                                    form=form,
-                                   message="Такой пользователь уже есть")
+                                   message="User already exists!")
         user = users.User(
             nick=form.nick.data,
             email=form.email.data
@@ -71,7 +70,7 @@ def reqister():
         session.add(user)
         session.commit()
         return redirect('/login')
-    return render_template('register.html', title='Регистрация', form=form, message='')
+    return render_template('register.html', title='Registration', form=form, message='')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -84,10 +83,10 @@ def login():
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
         return render_template('login.html',
-                               title='Вход',
-                               message="Неправильный логин или пароль",
+                               title='Login',
+                               message="Wrong login or password!",
                                form=form)
-    return render_template('login.html', title='Вход', form=form, message='')
+    return render_template('login.html', title='Login', form=form, message='')
 
 
 def message_received(methods=['GET', 'POST']):
@@ -106,4 +105,4 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 if __name__ == '__main__':
     db_session.global_init("db/chat.sqlite")
-    socketio.run(app, host='0.0.0.0')
+    socketio.run(app, debug=True, port=80, host='0.0.0.0')
