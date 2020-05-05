@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired
 from wtforms.fields.html5 import EmailField
 from flask_socketio import SocketIO
 from data import db_session, users
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
@@ -105,4 +106,5 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 if __name__ == '__main__':
     db_session.global_init("db/chat.sqlite")
-    socketio.run(app, host='0.0.0.0')
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host='0.0.0.0', port=port)
