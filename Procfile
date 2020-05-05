@@ -1,1 +1,1 @@
-web: gunicorn -k eventlet main.py
+web: python main.py
