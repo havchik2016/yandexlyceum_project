@@ -105,4 +105,4 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
 
 if __name__ == '__main__':
     db_session.global_init("db/chat.sqlite")
-    socketio.run(app, port=80, host='0.0.0.0')
+    socketio.run(app, host='0.0.0.0')
