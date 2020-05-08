@@ -5,7 +5,7 @@ from main import app
 from time import time
 from flask_login import UserMixin
 from sqlalchemy_serializer import SerializerMixin
-from .db_session import SqlAlchemyBase
+from .db_session import SqlAlchemyBase, create_session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
@@ -39,4 +39,5 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
                             algorithms=['HS256'])['reset_password']
         except Exception:
             return
-        return User.query.get(id)
+        session = create_session()
+        return session.query(User).filter(User.id == id).first()

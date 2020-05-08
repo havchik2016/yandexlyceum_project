@@ -1,12 +1,12 @@
 <p>Dear {{ user.nick }},</p>
 <p>
     to reset your password
-    <a href="{{ url_for('reset_password', token=token, _external=True) }}">
+    <a href="{{ url_for('reset_password_with_token', token=token, _external=True) }}">
         click on the link
     </a>.
 </p>
 <p>Also you can paste the following string to the address bar of your browser:</p>
-<p>{{ url_for('reset_password', token=token, _external=True) }}</p>
+<p>{{ url_for('reset_password_with_token', token=token, _external=True) }}</p>
 <p>If you didn't ask for password reset, you can just ignore this message.</p>
 <p>Best regards,</p>
 <p>YlChat Team</p>

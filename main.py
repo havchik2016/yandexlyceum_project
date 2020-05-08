@@ -133,22 +133,6 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     socketio.emit('my response', json, callback=message_received)
 
 
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_password_with_token(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('/'))
-    session = db_session.create_session()
-    user = users.User.verify_reset_password_token(token)
-    if not user:
-        return redirect(url_for('/'))
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        user.set_password(form.password.data)
-        session.commit()
-        return render_template("info_page.html", title="Success", message='Your password was reset successfully.')
-    return render_template('reset_password.html', form=form)
-
-
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
     if current_user.is_authenticated:
@@ -169,6 +153,22 @@ def reset_password():
                                    title='Reset Password', form=form, message='No user with such email!')
     return render_template('reset_password_request.html',
                            title='Reset Password', form=form, message='')
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password_with_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('/'))
+    session = db_session.create_session()
+    user = users.User.verify_reset_password_token(token)
+    if not user:
+        return redirect(url_for('/'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        session.query(users.User).filter(users.User.id == user.id).first().set_password(form.password.data)
+        session.commit()
+        return render_template("info_page.html", title="Success", message='Your password was reset successfully.')
+    return render_template('reset_password.html', form=form)
 
 
 if __name__ == '__main__':
