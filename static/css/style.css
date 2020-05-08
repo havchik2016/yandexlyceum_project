@@ -7,3 +7,13 @@ form {
     width: 500px;
     margin: 0 auto;
 }
+
+h1 {
+    color: #fff;
+    text-align: center;
+}
+
+.redirect_button {
+    color: #fff;
+    text-align: center;
+}

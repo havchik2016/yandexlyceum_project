@@ -1,5 +1,8 @@
 import datetime
 import sqlalchemy
+import jwt
+from main import app
+from time import time
 from flask_login import UserMixin
 from sqlalchemy_serializer import SerializerMixin
 from .db_session import SqlAlchemyBase
@@ -23,3 +26,17 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
+
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except Exception:
+            return
+        return User.query.get(id)

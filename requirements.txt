@@ -6,5 +6,5 @@ WTForms
 Werkzeug
 SQLAlchemy
 SQLAlchemy_serializer
-gunicorn
-eventlet
+Flask-Mail
+pyjwt

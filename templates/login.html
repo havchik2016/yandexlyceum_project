@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 style="color: #fff; text-align:center;">Login</h1>
+<h1>Login</h1>
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
@@ -28,4 +28,6 @@
         <div class="alert alert-danger" role="alert">{{message}}</div>
     {% endif %}
 </form>
+<p class="redirect_button">First time here? <a href="/register">Register</a></p>
+<p class="redirect_button">Forgot your password? <a href="/reset_password">Click to reset</a></p>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 style="color: #fff; text-align: center">Registration</h1>
+<h1>Registration</h1>
 <form action="" method="post">
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
@@ -46,4 +46,5 @@
     <div class="alert alert-danger" role="alert">{{message}}</div>
     {% endif %}
 </form>
+<p class="redirect_button">Already have an account? <a href="/login">Login</a></p>
 {% endblock %}
