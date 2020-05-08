@@ -168,7 +168,7 @@ def reset_password_with_token(token):
         session.query(users.User).filter(users.User.id == user.id).first().set_password(form.password.data)
         session.commit()
         return render_template("info_page.html", title="Success", message='Your password was reset successfully.')
-    return render_template('reset_password.html', form=form)
+    return render_template('reset_password.html', form=form, title='Reset Password')
 
 
 if __name__ == '__main__':
